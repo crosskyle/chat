@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
         strcat(message, input);
         int messageLength = (int)strlen(message);
         
-        charsWritten = send(socketFD, message, messageLength, (int)0);
+        charsWritten = send(socketFD, message, messageLength, 0);
         
         // Get message from server
         memset(buffer, '\0', sizeof(buffer)); // Clear out the buffer again for reuse
@@ -89,6 +89,13 @@ int main(int argc, char *argv[])
         int terminalLocation = strstr(buffer, "@@") - buffer;
         buffer[terminalLocation] = '\0';
         printf("%s\n", buffer);
+        
+        
+        // Exit program if '\quit' command is received
+        if (strcmp((strstr(buffer, "> ")), "> \\quit") == 0) {
+            close(socketFD);
+            break;
+        }
         
         close(socketFD); // Close the socket
     }
