@@ -24,9 +24,7 @@ else:
 
           receivedMessage = connectionSocket.recv(2024)
 
-          arr = receivedMessage.split(' ')
-
-          if arr[0] == '\quit':
+          if receivedMessage == "\quit":
             connectionSocket.close()
             break
 

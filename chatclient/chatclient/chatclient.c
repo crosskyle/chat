@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         input[userInputLength-1] = '\0';
         
         if (strcmp(input, "\\quit") == 0) {
-            charsWritten = send(socketFD, input, userInputLength, 0);
+            charsWritten = send(socketFD, input, 5, 0);
             close(socketFD);
             break;
         }
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
             if (charsRead < 0) error("CLIENT: ERROR reading from socket");
         }
         
-        // The @@ chars are removed from the decrypted message and the message is sent to stdout
+        // The @@ chars are removed from the message and the message is sent to stdout
         int terminalLocation = strstr(buffer, "@@") - buffer;
         buffer[terminalLocation] = '\0';
         printf("%s\n", buffer);
