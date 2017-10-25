@@ -1,10 +1,12 @@
 # Author: Kyle Cross
+# Title: chatserve.py
 # Date: 10/17/2017
 # Description: This program is a server in a chat client program. The program takes a port number as
 # a command line argument. The server continually runs on one thread to allow for subsequent clients
 # to connect with it. Communication between the server host and client host must alternate. The user
 # can enter a command '\quit' to end communication with the current client host.
 # Sources: Some syntax is borrowed from class lecture.
+# Testing: Tested on flip1.engr.oregonstate.edu
 
 from socket import *
 import sys
@@ -12,7 +14,7 @@ import sys
 
 # Validation
 # Input: command line arguments.
-# This function takes command line arguments as inputs and verifies that they are valid.
+# Description: This function takes command line arguments as inputs and verifies that they are valid.
 # Output: It returns a valid port number.
 
 def validation(numOfArguments, serverPort):
@@ -53,7 +55,7 @@ def receiveMessage(connectionSocket):
   # Receive message
   receivedMessage = connectionSocket.recv(2024)
 
-  # Terminate program if '\quit' is received
+  # Terminate client communication if '\quit' is received
   if receivedMessage == "\quit":
     connectionSocket.close()
     return -1
@@ -73,7 +75,7 @@ def sendMessage(connectionSocket):
   sentence = raw_input('Host A> ')
   connectionSocket.send('Host A> ' + sentence)
 
-  # Terminate program if '\quit' is received
+  # Terminate client communication if '\quit' is received
   if sentence == '\quit':
     return -1
 
