@@ -12,7 +12,7 @@ void error(const char *msg) { perror(msg); exit(0); } // Error function used for
 int main(int argc, char *argv[])
 {
     if (argc != 3) {
-        printf("%s\n", "Please provide a host name and port number.");
+        printf("%s\n", "Please provide a hostname and port number.");
         return 1;
     }
     
@@ -49,7 +49,6 @@ int main(int argc, char *argv[])
     handle[handleLength+1] = '\0';
     strcat(handle, "> ");
     
-    printf("%s\n", "You are now ready to chat.");
     
     while (1) {
         // Set up the socket
