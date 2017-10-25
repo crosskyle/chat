@@ -22,7 +22,7 @@ else:
         while 1:
           connectionSocket, addr = serverSocket.accept()
 
-          receivedMessage = connectionSocket.recv(1024)
+          receivedMessage = connectionSocket.recv(2024)
 
           arr = receivedMessage.split(' ')
 
@@ -34,7 +34,7 @@ else:
 
           sentence = raw_input(handle + '> ')
 
-          connectionSocket.send(handle + '> ' + sentence)
+          connectionSocket.send(handle + '> ' + sentence + '@@')
 
           connectionSocket.close()
 
