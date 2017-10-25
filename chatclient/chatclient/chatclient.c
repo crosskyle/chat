@@ -7,7 +7,9 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-void error(const char *msg) { perror(msg); exit(0); } // Error function used for reporting issues
+void error(const char *msg) { perror(msg); exit(0); } // Prints errors
+
+
 
 int main(int argc, char *argv[])
 {
@@ -46,7 +48,6 @@ int main(int argc, char *argv[])
     fgets(handle, 2048, stdin);
     int handleLength = (int)strlen(handle);
     handle[handleLength-1] = '\0';
-    handle[handleLength+1] = '\0';
     strcat(handle, "> ");
     
     
@@ -85,22 +86,10 @@ int main(int argc, char *argv[])
         
         // Get message from server
         memset(buffer, '\0', sizeof(buffer)); // Clear out the buffer again for reuse
-        char readBuffer[1010];
+        charsRead = recv(socketFD, buffer, sizeof(buffer) - 1, 0); // Read data from the socket, leaving \0 at end
+        if (charsRead < 0) error("CLIENT: ERROR reading from socket");
         
-        // The readBuffer continually reads messages sent from server and concatenates it onto the full message received in the
-        // buffer variable until the @@ chars are received which mark the end of the sent message
-        while (strstr(buffer, "@@") == NULL) {
-            memset(readBuffer, '\0', sizeof(readBuffer));
-            charsRead = recv(socketFD, readBuffer, sizeof(readBuffer) - 1, 0); // Read data from the socket, leaving \0 at end
-            strcat(buffer, readBuffer);
-            if (charsRead < 0) error("CLIENT: ERROR reading from socket");
-        }
-        
-        // The @@ chars are removed from the message and the message is sent to stdout
-        int terminalLocation = strstr(buffer, "@@") - buffer;
-        buffer[terminalLocation] = '\0';
         printf("%s\n", buffer);
-        
         
         // Exit program if '\quit' command is received
         if (strcmp((strstr(buffer, "> ")), "> \\quit") == 0) {

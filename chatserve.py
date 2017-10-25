@@ -32,7 +32,6 @@ def startup(serverPort):
 
 
 
-
 def receiveMessage(connectionSocket):
 
   receivedMessage = connectionSocket.recv(2024)
@@ -50,12 +49,13 @@ def receiveMessage(connectionSocket):
 def sendMessage(connectionSocket):
 
   sentence = raw_input('Host A> ')
-  connectionSocket.send('Host A> ' + sentence + '@@')
+  connectionSocket.send('Host A> ' + sentence)
 
   if sentence == '\quit':
     return -1
 
   return 0
+
 
 
 def main():
