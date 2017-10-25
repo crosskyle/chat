@@ -9,7 +9,7 @@ else:
     if serverPort < 1024 or serverPort > 65535:
       print 'Port number must be within range 1024 - 65535.'
     else:
-      handle = 'Fluffykins'
+      handle = 'Host A'
 
       serverSocket = socket(AF_INET, SOCK_STREAM)
       serverSocket.bind(('', serverPort))
@@ -17,7 +17,7 @@ else:
 
       while 1:
 
-        print 'The server is ready to receive at port ' + str(serverPort)
+        print 'Host A is ready to receive at port ' + str(serverPort)
 
         while 1:
           connectionSocket, addr = serverSocket.accept()

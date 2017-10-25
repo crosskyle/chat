@@ -11,6 +11,16 @@ void error(const char *msg) { perror(msg); exit(0); } // Error function used for
 
 int main(int argc, char *argv[])
 {
+    if (argc != 3) {
+        printf("%s\n", "Please provide a host name and port number.");
+        return 1;
+    }
+    
+    if (atoi(argv[2]) < 1024 || atoi(argv[2]) > 65535) {
+        printf("%s\n", "Please provide a port number in range 1024 - 65535.");
+        return 1;
+    }
+    
     int socketFD, portNumber, charsWritten, charsRead;
     struct sockaddr_in serverAddress;
     struct hostent* serverHostInfo;
@@ -20,15 +30,15 @@ int main(int argc, char *argv[])
     
     // Set up the server address struct
     memset((char*)&serverAddress, '\0', sizeof(serverAddress)); // Clear out the address struct
-    portNumber = 65535; // Get the port number, convert to an integer from a string
+    portNumber = atoi(argv[2]); // Get the port number, convert to an integer from a string
     serverAddress.sin_family = AF_INET; // Create a network-capable socket
     serverAddress.sin_port = htons(portNumber); // Store the port number
-    serverHostInfo = gethostbyname("localhost"); // Convert the machine name into a special form of address
+    serverHostInfo = gethostbyname(argv[1]); // Convert the machine name into a special form of address
     if (serverHostInfo == NULL) { fprintf(stderr, "CLIENT: ERROR, no such host\n"); exit(0); }
     memcpy((char*)&serverAddress.sin_addr.s_addr, (char*)serverHostInfo->h_addr, serverHostInfo->h_length); // Copy in the address
     
     
-    printf("%s\n", "Enter a handle: ");
+    printf("%s", "Enter a handle: ");
     
     //Using fgets to get a maximum of 2048 characters from stdin
     char handle[2048];
@@ -38,6 +48,8 @@ int main(int argc, char *argv[])
     handle[handleLength-1] = '\0';
     handle[handleLength+1] = '\0';
     strcat(handle, "> ");
+    
+    printf("%s\n", "You are now ready to chat.");
     
     while (1) {
         // Set up the socket
